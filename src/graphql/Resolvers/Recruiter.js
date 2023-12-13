@@ -8,6 +8,7 @@ module.exports = {
     Mutation: {
         async registerRecruiter(_, {registerInput: {firstname, lastname, email, password}}){
             const oldRecruiter = await Recruiter.findOne({email});
+            console.log("dgh")
 
             if(oldRecruiter){
                 throw new ApolloError('Recruiter with specified email already exists ' + email, 'RECRUITER_ALREADY_EXISTS');
@@ -15,11 +16,12 @@ module.exports = {
 
             var encryptedPassword = await bcrypt.hash(password, 10)
 
-            const newRecruiter = new Recruiter(
+            const newRecruiter = new Recruiter({
                 firstname: firstname,
                 lastname: lastname,
                 email: email,
                 password: encryptedPassword
+            }   
             )
 
             const token = jwt.sign(
@@ -47,7 +49,7 @@ module.exports = {
                 recruiter.token = token;
                 
                 return {
-                    id = recruiter.id,
+                    id : recruiter.id, 
                     ...recruiter._doc
                 }
 
