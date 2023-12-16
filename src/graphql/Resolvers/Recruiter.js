@@ -59,6 +59,22 @@ module.exports = {
         }
     },
     Query: {
-        recruiter: (_, {ID}) => Recruiter.findById(ID)
+        recruiter: (_, {ID}) => Recruiter.findById(ID),
+        currentRecruiter: async (_, { token }) => {
+            try {
+              const recruiter = await Recruiter.findOne({ token });
+      
+              if (!recruiter) {
+                throw new ApolloError('Recruiter not found', 'RECRUITER_NOT_FOUND');
+              }
+      
+              return {
+                id: recruiter.id,
+                ...recruiter._doc,
+              };
+            } catch (error) {
+              throw new ApolloError('Error fetching recruiter', 'FETCH_RECRUITER_ERROR');
+            }
+          },
     }
 }

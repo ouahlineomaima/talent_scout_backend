@@ -24,7 +24,9 @@ const Recruiter = gql`
 
   type Query {
     recruiter(id: ID!): Recruiter
+    currentRecruiter(token: String!): Recruiter
   }
+
 
   type Mutation {
     registerRecruiter(registerInput: RegisterInput): Recruiter
