@@ -1,10 +1,13 @@
 const recruiterResolvers = require('./Recruiter');
+const recruitmentResolvers = require('./Recruitment')
 
 module.exports = {
     Query:{
-        ...recruiterResolvers.Query
+        ...recruiterResolvers.Query,
+        ...recruitmentResolvers.Query
     },
     Mutation:{
-        ...recruiterResolvers.Mutation
+        ...recruiterResolvers.Mutation,
+        ...recruitmentResolvers.Mutation
     }
 }

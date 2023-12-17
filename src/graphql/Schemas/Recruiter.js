@@ -2,6 +2,7 @@ const { gql } = require('apollo-server');
 
 const Recruiter = gql`
   type Recruiter {
+    id: ID!
     firstname: String
     lastname: String
     email: String
