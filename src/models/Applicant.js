@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 import ApplicantStatus from "../utils/ApplicantStatus";
+import ApplicantionStatus from "../utils/ApplicationStatus";
 
 const ApplicantSchema = new mongoose.Schema({
     firstname: String,
@@ -8,7 +9,9 @@ const ApplicantSchema = new mongoose.Schema({
     resume: String,
     coverLetter: String,
     score: {type: Number, default: 0}
-    status: { type: String, enum: Object.values(ApplicantStatus)}
+    applicantStatus: { type: String, enum: Object.values(ApplicantStatus)},
+    applicationStatus: {type: String, enum: Object.values(ApplicantionStatus), default: ApplicantionStatus.NotChecked}
+
 })
 
 const Applicant = mongoose.model('Applicant', ApplicantSchema);
