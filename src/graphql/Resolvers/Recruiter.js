@@ -59,6 +59,26 @@ module.exports = {
         }
     },
     Query: {
-        recruiter: (_, {ID}) => Recruiter.findById(ID)
-    }
+        recruiter: (_, { ID }) => Recruiter.findById(ID),
+        currentRecruiter: async (_, { token }) => {
+          try {
+            // Verify the token
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    
+            // Fetch the recruiter based on the decoded token
+            const recruiter = await Recruiter.findById(decodedToken.recruiter_id);
+    
+            if (!recruiter) {
+              throw new ApolloError('Recruiter not found', 'RECRUITER_NOT_FOUND');
+            }
+    
+            return {
+              id: recruiter.id,
+              ...recruiter._doc,
+            };
+          } catch (error) {
+            throw new ApolloError('Invalid token', 'INVALID_TOKEN');
+          }
+        },
+      },
 }

@@ -4,8 +4,13 @@ const http = require('http')
 const cors = require('cors');
 require('dotenv').config();
 const { ApolloServer }  = require('apollo-server');
+const { mergeTypeDefs } = require('@graphql-tools/merge');
+const { loadFilesSync } = require('@graphql-tools/load-files');
 
-const typeDefs = require('./src/graphql/Schemas/Recruiter');
+
+const typeDefsArray = loadFilesSync('./src/graphql/Schemas');
+
+const typeDefs = mergeTypeDefs(typeDefsArray);
 const resolvers = require('./src/graphql/Resolvers');
 
 const server = new ApolloServer({

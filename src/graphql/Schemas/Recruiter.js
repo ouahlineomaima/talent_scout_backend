@@ -2,6 +2,7 @@ const { gql } = require('apollo-server');
 
 const Recruiter = gql`
   type Recruiter {
+    id: ID!
     firstname: String
     lastname: String
     email: String
@@ -24,7 +25,9 @@ const Recruiter = gql`
 
   type Query {
     recruiter(id: ID!): Recruiter
+    currentRecruiter(token: String!): Recruiter
   }
+
 
   type Mutation {
     registerRecruiter(registerInput: RegisterInput): Recruiter
