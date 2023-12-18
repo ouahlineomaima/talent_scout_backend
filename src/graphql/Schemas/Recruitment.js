@@ -23,7 +23,7 @@ const Recruitment = gql`
   }
 
   input RecruitmentInput {
-    idRecruiter: ID!
+    token: String!
     trackedEmail: String!
     emailSubject: String!
     jobTitle: String!
@@ -37,7 +37,7 @@ const Recruitment = gql`
   type Query {
     recruitments: [Recruitment!]!
     recruitment(id: ID!): Recruitment
-    currentRecruiterRecruitments(idRecruiter: ID!): [Recruitment!]!
+    currentRecruiterRecruitments(token: String!): [Recruitment!]!
   }
 
   type Mutation {
