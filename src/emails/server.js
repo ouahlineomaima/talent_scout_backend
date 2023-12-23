@@ -6,21 +6,15 @@ const {authorize} = require('./services/googleApiAuthService');
 
 const app = express();
 
-app.use(cors({
-    exposedHeaders: ['Authorization'],
-}));
+app.use(cors());
 
 app.get('/auth', async (req, res) => {
     try {
-        let client = await authorize().then();
-        console.log("in")
-        console.log(client)
-        if(client){
-            res.status(200).json({client: client})
-        }
-        else{
-            res.status(500).json({ error: "An error occurred during granting permissions." });
-        }
+        let client = await authorize().then()
+        
+        res.status(200).json({client}) 
+        
+        
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "An error occurred during granting permissions." });

@@ -49,6 +49,7 @@ module.exports = {
 
     },
     async loginRecruiter(_, { loginInput: { email, password } }) {
+      console.log("login")
       const recruiter = await Recruiter.findOne({ email });
       if (recruiter && (await bcrypt.compare(password, recruiter.password))) {
         const token = jwt.sign(

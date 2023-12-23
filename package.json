@@ -27,6 +27,7 @@
     "graphql-tools": "^9.0.0",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3"
+    "mongoose": "^8.0.3",
+    "opener": "^1.5.2"
   }
 }
