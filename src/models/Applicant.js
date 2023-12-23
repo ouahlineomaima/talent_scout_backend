@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
-import ApplicantStatus from "../utils/ApplicantStatus";
-import ApplicantionStatus from "../utils/ApplicationStatus";
+const ApplicantStatus = require("../utils/ApplicantStatus");
+const ApplicationStatus = require( "../utils/ApplicationStatus");
 
 const ApplicantSchema = new mongoose.Schema({
+    idRecruitment: { type: mongoose.Schema.Types.ObjectId, ref: 'Recruitment' },
     firstname: String,
     lastname: String,
     email: String,  
     resume: String,
     coverLetter: String,
-    score: {type: Number, default: 0}
+    score: {type: Number, default: 0},
     applicantStatus: { type: String, enum: Object.values(ApplicantStatus)},
-    applicationStatus: {type: String, enum: Object.values(ApplicantionStatus), default: ApplicantionStatus.NotChecked}
+    applicationStatus: {type: String, enum: Object.values(ApplicationStatus), default: ApplicationStatus.NotChecked}
 
 })
 

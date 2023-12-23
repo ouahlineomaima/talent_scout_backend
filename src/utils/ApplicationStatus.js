@@ -1,7 +1,7 @@
-const ApplicantionStatus = {
+const ApplicationStatus = {
     Checked: "Checked",
-    NotChecked: "Not Checked"
+    NotChecked: "NotChecked"
     
 };
 
-module.exports = ApplicantionStatus;
+module.exports = ApplicationStatus;
