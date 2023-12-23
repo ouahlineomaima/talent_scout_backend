@@ -7,18 +7,36 @@ module.exports = {
     Query: {
         applicant: async (_, { id }) => {
             try {
-              const foundApplicant = await Applicant.findById(id);
-      
-              if (!foundApplicant) {
-                throw new ApolloError('Applicant not found', 'APPLICANT_NOT_FOUND');
-              }
-      
-              return foundApplicant;
+                const foundApplicant = await Applicant.findById(id);
+
+                if (!foundApplicant) {
+                    throw new ApolloError('Applicant not found', 'APPLICANT_NOT_FOUND');
+                }
+
+                return foundApplicant;
             } catch (error) {
-              console.error(error);
-              throw new ApolloError('Error fetching applicant', 'FETCH_APPLICANT_ERROR');
+                console.error(error);
+                throw new ApolloError('Error fetching applicant', 'FETCH_APPLICANT_ERROR');
             }
-          },
+        },
+        applicants: async () => {
+            return await Applicant.find();
+        },
+        recruitmentApplicant: async (_, { idRecruitment }) => {
+            try {
+                const recruitment = await Recruitment.findById(idRecruitment).populate('applicants');
+
+                if (!recruitment) {
+                    throw new ApolloError('Recruitment not found', 'RECRUITMENT_NOT_FOUND');
+                }
+
+
+                return recruitment.applicants;
+            } catch (error) {
+                console.error(error);
+                throw new ApolloError('Error fetching recruitment applicants', 'FETCH_RECRUITMENT_APPLICANTS_ERROR');
+            }
+        },
     },
     Mutation: {
         async addApplicant(_, { applicantInput }) {
