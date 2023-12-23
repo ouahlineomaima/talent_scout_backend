@@ -37,10 +37,9 @@ module.exports = {
            const idRecruiter = recruiter._id
             const recruitmentData = {
               ...recruitmentInput,
+              trackedEmail: recruiter.email,
               applicants: [],
               idRecruiter: recruiter._id
-
-    
             };
     
             const newRecruitment = new Recruitment(recruitmentData);
