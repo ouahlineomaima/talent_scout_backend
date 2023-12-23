@@ -8,8 +8,8 @@ const {google} = require('googleapis');
 const SCOPE = ["https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.modify"];
 
 // Fetching and storing tokens
-const TOKEN_PATH =path.join(process.cwd(), '../credentials/token.json');
-const CREDENTIALS_PATH = path.join(process.cwd(), '../../credentials/credentials.json');
+const TOKEN_PATH =path.join(process.cwd(), 'credentials/token.json');
+const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials/credentials.json');
 
 // Reading previously authorized credentials from saved file
 async function loadSavedCredentialsIfExists(){
@@ -54,4 +54,7 @@ async function authorize(){
     return client;
 }
 
-module.exports = authorize
+module.exports = {
+    authorize,
+    SCOPE
+  };

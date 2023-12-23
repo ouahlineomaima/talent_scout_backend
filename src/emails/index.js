@@ -1,17 +1,30 @@
-const authorize = require('./services/googleApiAuthService');
-const {listOfLabels, sendEmail, getUnreadMessages} = require('./services/gmailApiServices');
-const { error } = require('console');
+const nodeCron = require('node-cron');
+const { getUnreadMessages,
+    getMessageSubject,
+    getMessageAttachments,
+    markMessageAsRead } = require('./services/gmailApiServices'); 
 
-async function testing(){
-    let auth = await authorize().then().catch(console.error);
-    //await listOfLabels(auth).then().catch(console.error);
+// Define the cron job to run at 6 am every day
+nodeCron.schedule('0 6 * * *', async () => {
+  try {
+    // Fetch all recruitments
+    const recruitments = await Recruitment.find();
 
-    let message = 'TO: omaimaouahline@gmail.com\n'+
-    'Subject: Test Email\n'+
-    'Content-Type: text/html; charset=utf-8\n\n'+
-    'Hello World';
-    //await sendEmail(auth, message).catch(console.error);
-    await getLatestMessage(auth).catch(error);
-}
+    // Iterate through each recruitment and fetch emails
+    for (const recruitment of recruitments) {
+      const { trackedEmail, emailSubject } = recruitment;
 
-testing().catch(console.error)
+      // Implement the function to fetch emails based on trackedEmail and emailSubject
+      const matchingEmails = await fetchEmailsForRecruitment(trackedEmail, emailSubject);
+
+      // Do something with the matching emails, for example, update the Recruitment model
+      await Recruitment.findByIdAndUpdate(recruitment._id, { $push: { matchingEmails } });
+    }
+
+    console.log('Cron job executed successfully');
+  } catch (error) {
+    console.error('Cron job error:', error.message);
+  }
+});
+
+
