@@ -22,7 +22,7 @@ module.exports = {
         applicants: async () => {
             return await Applicant.find();
         },
-        recruitmentApplicant: async (_, { idRecruitment }) => {
+        recruitmentApplicants: async (_, { idRecruitment }) => {
             try {
                 const recruitment = await Recruitment.findById(idRecruitment).populate('applicants');
 

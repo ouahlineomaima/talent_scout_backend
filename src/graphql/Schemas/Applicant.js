@@ -50,7 +50,7 @@ const Applicant = gql`
   type Query {
     applicant(id: ID!): Applicant
     applicants: [Applicant!]
-    recruitmentApplicant(idRecruitment: ID!): [Applicant]
+    recruitmentApplicants(idRecruitment: ID!): [Applicant]
   }
 
   type Mutation {
