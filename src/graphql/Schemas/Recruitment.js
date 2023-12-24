@@ -24,7 +24,6 @@ const Recruitment = gql`
 
   input RecruitmentInput {
     token: String!
-    trackedEmail: String!
     emailSubject: String!
     jobTitle: String!
     descriptions: TechnologiesDescriptionInput!
