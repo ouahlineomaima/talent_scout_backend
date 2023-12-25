@@ -11,7 +11,8 @@ const ApplicantSchema = new mongoose.Schema({
     coverLetter: String,
     score: {type: Number, default: 0},
     applicantStatus: { type: String, enum: Object.values(ApplicantStatus)},
-    applicationStatus: {type: String, enum: Object.values(ApplicationStatus), default: ApplicationStatus.NotChecked}
+    applicationStatus: {type: String, enum: Object.values(ApplicationStatus), default: ApplicationStatus.NotChecked},
+    phone: String
 
 })
 
