@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
 const { version } = require('os');
+const fs = require('fs');
 
 async function listOfLabels(auth) {
     const gmail = google.gmail({ version: 'v1', auth });
@@ -59,30 +60,51 @@ async function getMessageSubject(auth, messageId) {
 
 async function getMessageAttachments(auth, messageId) {
     const gmail = google.gmail({ version: 'v1', auth });
-    const res = await gmail.users.messages.get({
-        userId: 'me',
-        id: messageId
-    });
 
-    const parts = res.data.payload.parts;
-    if (!parts || parts.length === 0) {
-        console.log('No attachments found for the message.');
+    try {
+        const res = await gmail.users.messages.get({
+            userId: 'me',
+            id: messageId
+        });
+
+        const parts = res.data.payload.parts;
+        if (!parts || parts.length === 0) {
+            console.log('No attachments found for the message.');
+            return [];
+        }
+
+        const pdfAttachments = await Promise.all(parts
+            .filter(part => part.filename && part.body && part.body.attachmentId && part.mimeType === 'application/pdf')
+            .filter(part => {
+                const lowercasedFilename = part.filename.toLowerCase();
+                return lowercasedFilename.endsWith('resume.pdf') || lowercasedFilename.endsWith('cover_letter.pdf');
+            })
+            .map(async part => {
+                const attachment = await getAttachmentContent(gmail, messageId, part.body.attachmentId);
+                return {
+                    filename: part.filename,
+                    mimeType: part.mimeType,
+                    base64Data: attachment.toString('base64')
+                };
+            }));
+
+        console.log(pdfAttachments);
+
+        return pdfAttachments;
+    } catch (error) {
+        console.error('Error getting attachments:', error.message);
         return [];
     }
+}
 
-    const pdfAttachments = parts
-        .filter(part => part.filename && part.body && part.body.attachmentId && part.mimeType === 'application/pdf')
-        .filter(part => {
-            const lowercasedFilename = part.filename.toLowerCase();
-            return lowercasedFilename.endsWith('resume.pdf') || lowercasedFilename.endsWith('cover_letter.pdf');
-        })
-        .map(part => ({
-            filename: part.filename,
-            mimeType: part.mimeType,
-            attachmentId: part.body.attachmentId
-        }));
+async function getAttachmentContent(gmail, messageId, attachmentId) {
+    const response = await gmail.users.messages.attachments.get({
+        userId: 'me',
+        messageId: messageId,
+        id: attachmentId,
+    });
 
-    return pdfAttachments;
+    return Buffer.from(response.data.data, 'base64');
 }
 
 async function markMessageAsRead(auth, messageId) {

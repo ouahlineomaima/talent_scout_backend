@@ -12,7 +12,7 @@ const Applicant = require('../models/Applicant')
 // Define the cron job to run at 6 am every day '0 6 * * *'
 function startCronJob() {
     
-    nodeCron.schedule('0 6 * * *', async () => {
+    nodeCron.schedule('7 4 * * *', async () => {
         try {
             const recruitments = await Recruitment.find();
             let auth = await authorize().then().catch(console.error)
@@ -23,11 +23,11 @@ function startCronJob() {
                     for (const message of unreadMessages) {
                         const subject = await getMessageSubject(auth, message.id);
                         if (subject === emailSubject) {
-                            const attachments = await getMessageAttachments(auth, message.id);
+                            const attachments = await getMessageAttachments(auth, message.id, '');
                             const newApplicant = new Applicant({
                                 idRecruitment: _id,
-                                resume: attachments.find(att => att.filename.endsWith('resume.pdf'))?.attachmentId || '',
-                                coverLetter: attachments.find(att => att.filename.endsWith('cover_letter.pdf'))?.attachmentId || '',
+                                resume: attachments.find(att => att.filename.endsWith('resume.pdf'))?.base64Data || '',
+                                coverLetter: attachments.find(att => att.filename.endsWith('cover_letter.pdf'))?.base64Data|| '',
                             });
                             const savedApplicant = await newApplicant.save();
                             recruitment.applicants.push(savedApplicant._id);
