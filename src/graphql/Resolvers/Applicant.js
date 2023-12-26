@@ -2,6 +2,7 @@
 const Recruitment = require('../../models/Recruitment');
 const Applicant = require('../../models/Applicant')
 const { ApolloError } = require('apollo-server-errors');
+const ApplicationStatus = require( "../../utils/ApplicationStatus");
 
 module.exports = {
     Query: {
@@ -37,6 +38,18 @@ module.exports = {
                 throw new ApolloError('Error fetching recruitment applicants', 'FETCH_RECRUITMENT_APPLICANTS_ERROR');
             }
         },
+        checkedRecruitmentApplicants: async (_, { idRecruitment }) => {
+            try {
+                const applicants = await Applicant.find({
+                    idRecruitment,
+                    applicationStatus: ApplicationStatus.Checked,
+                  }).sort({ score: -1 }); 
+              return applicants;
+            } catch (error) {
+              console.error('Error fetching checked recruitment applicants:', error);
+              throw new Error('Error fetching checked recruitment applicants');
+            }
+          },
     },
     Mutation: {
         async addApplicant(_, { applicantInput }) {
