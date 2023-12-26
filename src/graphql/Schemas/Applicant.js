@@ -7,6 +7,7 @@ const Applicant = gql`
     Accepted
     Rejected
     Hired
+    Pending
   }
 
   enum ApplicationStatus{
@@ -25,6 +26,7 @@ const Applicant = gql`
     score: Float
     applicantStatus: ApplicantStatus
     applicationStatus: ApplicationStatus
+    phone: String
   }
 
   input ApplicantInput{
@@ -51,6 +53,7 @@ const Applicant = gql`
     applicant(id: ID!): Applicant
     applicants: [Applicant!]
     recruitmentApplicants(idRecruitment: ID!): [Applicant]
+    checkedRecruitmentApplicants(idRecruitment: ID!): [Applicant]
   }
 
   type Mutation {

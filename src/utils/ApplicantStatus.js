@@ -3,7 +3,8 @@ const ApplicantStatus = {
     InterviewPassed: "Interview Passed",
     Accepted: "Accepted",
     Rejected: "Rejected",
-    Hired: "Hired"
+    Hired: "Hired",
+    Pending: "Pending"
     
 };
 
